@@ -16,7 +16,7 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   &:not(:last-child) {
-    margin-right: 20px;
+    margin-right: 16px;
   }
 `;
 
