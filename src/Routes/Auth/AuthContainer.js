@@ -17,7 +17,7 @@ export default () => {
     }
   });
 
-  const [createAccount] = useMutation(CREATE_ACCOUNT, {
+  const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
     variables: {
       email: email.value,
       username: username.value,
@@ -32,12 +32,14 @@ export default () => {
     if (action === "logIn") {
       if (email.value !== "") {
         try {
-          const data = await requestSecretMutation();
-          console.log(data);
-          const { requestSecret } = data;
+          const {
+            data: { requestSecret }
+          } = await requestSecretMutation();
           if (!requestSecret) {
             toast.error("You dont have an account yet, create one !");
             setTimeout(() => setAction("signUp"), 3000);
+          } else {
+            toast.success("Just sent you the password, check your inbox !");
           }
         } catch {
           toast.error("Cannot complete action. Please try again later");
@@ -45,10 +47,19 @@ export default () => {
       } else {
         toast.error("Email id required");
       }
-    } else if (action === "SignUp") {
+    } else if (action === "signUp") {
       if (email.value !== "" && username.value !== "") {
         try {
-          await createAccount();
+          const {
+            data: { createAccount }
+          } = await createAccountMutation();
+
+          if (!createAccount) {
+            toast.error("Cannot create account");
+          } else {
+            toast.success("Account successfuly created. Log in now");
+            setTimeout(() => setAction("logIn"), 3000);
+          }
         } catch {
           toast.error("Cannot complete action. Please try again later");
         }
