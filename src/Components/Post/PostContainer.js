@@ -40,7 +40,7 @@ PostContainer.propTypes = {
       }).isRequired
     })
   ).isRequired,
-  createdAt: PropTypes.string
+  createdAt: PropTypes.string.isRequired
 };
 
 export default PostContainer;

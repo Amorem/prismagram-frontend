@@ -9,6 +9,7 @@ const FEED_QUERY = gql`
   {
     seeFeed {
       id
+      createdAt
       location
       caption
       user {
