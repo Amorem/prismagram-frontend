@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation, useQuery } from "react-apollo-hooks";
 import { toast } from "react-toastify";
 import PostPresenter from "./PostPresenter";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
+import { ME } from "../../SharedQueries";
 
 const PostContainer = ({
   id,
@@ -20,7 +21,9 @@ const PostContainer = ({
   const [isLikedState, setIsLiked] = useState(isLiked);
   const [likeCountState, setLikeCount] = useState(likeCount);
   const comment = useInput("");
+  const { data: meQuery } = useQuery(ME);
   const [currentItem, setCurrentItem] = useState(0);
+  const [selfComments, setSelfComments] = useState([]);
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
     variables: { postId: id }
   });
@@ -43,14 +46,27 @@ const PostContainer = ({
       await toggleLikeMutation();
     } catch {
       setIsLiked(!isLikedState);
-      toast.error("Cannot register like");
+      toast.error("Cannot save like");
     }
   };
 
-  const onKeyPress = e => {
-    if (e.keyCode === 13) {
+  const onKeyPress = async e => {
+    if (e.which === 13) {
+      e.preventDefault();
       comment.setValue("");
-      addCommentMutation();
+      setSelfComments([
+        ...selfComments,
+        {
+          id: Math.floor(Math.random() * 100),
+          text: comment.value,
+          user: { username: meQuery.me.username }
+        }
+      ]);
+      try {
+        await addCommentMutation();
+      } catch {
+        toast.error("Cannot save comment");
+      }
     }
   };
 
@@ -79,6 +95,7 @@ const PostContainer = ({
       currentItem={currentItem}
       toggleLike={toggleLike}
       onKeyPress={onKeyPress}
+      selfComments={selfComments}
     />
   );
 };
