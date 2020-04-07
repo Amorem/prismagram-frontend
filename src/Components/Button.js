@@ -14,7 +14,9 @@ const Container = styled.button`
   font-size: 14px;
   cursor: pointer;
 `;
-const Button = ({ text }) => <Container>{text}</Container>;
+const Button = ({ text, onClick }) => (
+  <Container onClick={onClick}>{text}</Container>
+);
 
 export default Button;
 
