@@ -9,7 +9,14 @@ const Wrapper = styled.div`
   height: 50vh;
 `;
 
-const Section = styled.div``;
+const Section = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 160px;
+  grid-auto-rows: 160px;
+  grid-gap: 25px;
+  margin-bottom: 50px;
+`;
 
 const SearchPresenter = ({ searchTerm, loading, data }) => {
   if (searchTerm === undefined) {
@@ -24,7 +31,7 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
         <Loader />
       </Wrapper>
     );
-  } else if (data && data.searchPost & data.searchUser) {
+  } else if (data && data.searchPost && data.searchUser) {
     return (
       <Wrapper>
         <Section>
@@ -33,9 +40,10 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
           ) : (
             data.searchUser.map((user) => (
               <UserCard
+                key={user.id}
                 username={user.username}
                 isFollowing={user.isFollowing}
-                url={user.url}
+                url={user.avatar}
                 isSelf={user.isSelf}
               />
             ))
@@ -50,6 +58,8 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
         </Section>
       </Wrapper>
     );
+  } else {
+    return null;
   }
 };
 
