@@ -5,6 +5,7 @@ import Loader from "../../Components/Loader";
 import Avatar from "../../Components/Avatar";
 import FatText from "../../Components/FatText";
 import FollowButton from "../../Components/FollowButton";
+import Button from "../../Components/Button";
 import SquarePost from "../../Components/SquarePost";
 
 const Wrapper = styled.div`
@@ -60,7 +61,7 @@ const Bio = styled.p`
   margin: 10px 0px;
 `;
 
-export default ({ loading, data }) => {
+export default ({ loading, data, logOut }) => {
   if (loading) {
     return (
       <Wrapper>
@@ -96,7 +97,11 @@ export default ({ loading, data }) => {
           <HeaderColumn>
             <Username>{username}</Username>
             <UsernameRow>
-              {!isSelf && <FollowButton id={id} isFollowing={isFollowing} />}
+              {isSelf ? (
+                <Button onClick={logOut} text="Log out" />
+              ) : (
+                <FollowButton id={id} isFollowing={isFollowing} />
+              )}
             </UsernameRow>
 
             <Counts>

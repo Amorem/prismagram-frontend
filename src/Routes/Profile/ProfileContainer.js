@@ -1,9 +1,9 @@
 import React from "react";
 
 import { withRouter } from "react-router-dom";
-import { useQuery } from "react-apollo-hooks";
+import { useQuery, useMutation } from "react-apollo-hooks";
 import ProfilePresenter from "./ProfilePresenter";
-import { GET_USER } from "./ProfileQueries";
+import { GET_USER, LOG_OUT } from "./ProfileQueries";
 
 export default withRouter(
   ({
@@ -12,6 +12,7 @@ export default withRouter(
     },
   }) => {
     const { data, loading } = useQuery(GET_USER, { variables: { username } });
-    return <ProfilePresenter loading={loading} data={data} />;
+    const [logOut] = useMutation(LOG_OUT);
+    return <ProfilePresenter loading={loading} data={data} logOut={logOut} />;
   }
 );
