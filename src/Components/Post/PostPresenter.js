@@ -4,13 +4,17 @@ import TextareaAutosize from "react-autosize-textarea";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
 import { HeartFull, HeartEmpty, CommentIcon } from "../Icons";
+import { Link } from "react-router-dom";
 
 const Post = styled.div`
-  ${props => props.theme.whiteBox}
+  ${(props) => props.theme.whiteBox}
   width: 100%;
   max-width: 600px;
   user-select: none;
   margin-bottom: 25px;
+  a {
+    color: inherit;
+  }
 `;
 
 const Header = styled.header`
@@ -44,10 +48,10 @@ const File = styled.img`
   height: 600px;
   position: absolute;
   top: 0;
-  background-image: url(${props => props.src});
+  background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
-  opacity: ${props => (props.showing ? 1 : 0)};
+  opacity: ${(props) => (props.showing ? 1 : 0)};
   transition: opacity 0.5s linear;
 `;
 
@@ -75,7 +79,7 @@ const Timestamp = styled.span`
   display: block;
   margin: 10px 0px;
   padding-bottom: 10px;
-  border-bottom: ${props => props.theme.lightGreyColor} 1px solid;
+  border-bottom: ${(props) => props.theme.lightGreyColor} 1px solid;
 `;
 
 const Textarea = styled(TextareaAutosize)`
@@ -111,13 +115,15 @@ export default ({
   toggleLike,
   onKeyPress,
   comments,
-  selfComments
+  selfComments,
 }) => (
   <Post>
     <Header>
       <Avatar size="sm" url={avatar} />
       <UserColumn>
-        <FatText text={username} />
+        <Link to={`/${username}`}>
+          <FatText text={username} />
+        </Link>
         <Location>{location}</Location>
       </UserColumn>
     </Header>
@@ -141,13 +147,13 @@ export default ({
       />
       {comments && (
         <Comments>
-          {comments.map(comment => (
+          {comments.map((comment) => (
             <Comment key={comment.id}>
               <FatText text={comment.user.username} />
               {comment.text}
             </Comment>
           ))}
-          {selfComments.map(comment => (
+          {selfComments.map((comment) => (
             <Comment key={comment.id}>
               <FatText text={comment.user.username} />
               {comment.text}
