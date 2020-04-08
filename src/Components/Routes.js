@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Feed from "../Routes/Feed";
 import Auth from "../Routes/Auth";
 import Explore from "../Routes/Explore";
-import Profile from "../Routes/Profile";
+import Profile from "../Routes/Profile/";
 import Search from "../Routes/Search";
 
 const LoggedInRoutes = () => (
@@ -25,6 +25,6 @@ const AppRouter = ({ isLoggedIn }) =>
   isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />;
 
 AppRouter.prototype = {
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
 };
 export default AppRouter;
